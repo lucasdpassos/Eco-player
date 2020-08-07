@@ -7,4 +7,7 @@ export default new Vuetify({
     theme: {
         dark: true,
       },
+    icons: {
+      iconfont: 'mdiSvg', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+  },  
 });
