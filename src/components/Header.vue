@@ -16,11 +16,8 @@
 
       <v-toolbar-title class="display-2">Eco
       <v-subheader>Alimento épico para o cérebro!</v-subheader>
-      </v-toolbar-title>  
-             
-              
-
-      
+      </v-toolbar-title>       
+                   
     </v-toolbar>
     
   </v-card>
