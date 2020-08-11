@@ -25,15 +25,13 @@
                 ></v-card-title>
 
                 <v-card-subtitle v-text="song.artist"></v-card-subtitle>
-                <v-btn style="margin: 8px;" v-if="!isPlaying" @click="play">
+                <v-btn class="play" v-if="!isPlaying" @click="play">Play
                 <v-icon>mdi-play</v-icon>
                 </v-btn>
-                <v-btn style="margin: 8px;" v-else @click="pause">
+                <v-btn class="pause" v-else @click="pause">Pause
                 <v-icon>mdi-pause</v-icon>
                 </v-btn>
-                <v-btn style="margin: 8px;">
-                <v-icon>mdi-stop</v-icon>
-                </v-btn>
+                
               </div>
 
              
@@ -59,63 +57,78 @@ import tempic from '../assets/capes/tempic.png'
 import ivan from '../assets/capes/ivan.png'
 
 
+
 export default {
-    data () {
-      return {
+  name: 'app',
+  data () {
+    return {
       current: {},
       index: 0,
       isPlaying: false,
       songs: [
         {
-          color: '#1F7087',
           cape: heroes,
-          title: 'Mythical and Mighty',
-          artist: 'Secession Studios ft Greg Dombrowski',
-          src: require('../assets/music/MythicalAndMighty.mp3'),
+          title: 'Grateful',
+          artist: 'Neffex',
+          src: require('../assets/music/MythicalAndMighty.mp3')
         },
         {
-          color: '#952175',
           cape: tempic,
-          title: 'T E M P I C',
-          artist: 'Alan Lennon',
+          title: 'Invincible',
+          artist: 'Deaf Kev',
+          src: require('../assets/music/TEMPIC.mp3')
         },
         {
-          color: '#952175',
           cape: ivan,
-          title: 'Facing Fears',
-          artist: 'Ivan Torrent',
-        },
-        {
-          color: '#952175',
-          cape: tempic,
-          title: 'T E M P I C',
-          artist: 'Alan Lennon',
-        },
+          title: 'Invincible',
+          artist: 'Deaf Kev',
+          src: require('../assets/music/FacingFears.mp3')
+        }
       ],
       player: new Audio()
-    }},
-    methods: {
-      play (song) {
-        if (typeof song.src != "undefined") {
-          this.current = song;       
-          
-
-          this.player.src = this.current.src
-        }
-          this.player.play();
-          this.isPlaying = true;
-      },
-      pause () {
-        this.player.pause()
-        this.isPlaying = false;
-      }
-    },
-    created () {
-      this.current = this.song[this.index]
-      this.player.src = this.current.src
-      this.player.play();
-      
     }
+  },
+  methods: {
+    play (song) {
+      if (typeof song.src != "undefined") {
+        this.current = song;
+        this.player.src = this.current.src;
+      }
+      this.player.play();
+      this.player.addEventListener('ended', function () {
+        this.index++;
+        if (this.index > this.songs.length - 1) {
+          this.index = 0;
+        }
+        this.current = this.songs[this.index];
+        this.play(this.current);
+      }.bind(this));
+      this.isPlaying = true;
+    },
+    pause () {
+      this.player.pause();
+      this.isPlaying = false;
+    },
+    next () {
+      this.index++;
+      if (this.index > this.songs.length - 1) {
+        this.index = 0;
+      }
+      this.current = this.songs[this.index];
+      this.play(this.current);
+    },
+    prev () {
+      this.index--;
+      if (this.index < 0) {
+        this.index = this.songs.length - 1;
+      }
+      this.current = this.songs[this.index];
+      this.play(this.current);
+    }
+  },
+  created () {
+    this.current = this.songs[this.index];
+    this.player.src = this.current.src;
   }
-  
+}
 </script>
